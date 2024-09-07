@@ -1,101 +1,205 @@
+'use client';
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+const BASE_URL = 'https://092c-38-253-146-9.ngrok-free.app';
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+export default function Home() {
+  const [pcs, setPcs] = useState([]);
+  const [newPcName, setNewPcName] = useState("");
+  const [capturaUrls, setCapturaUrls] = useState({});
+  const [pcInfo, setPcInfo] = useState({});
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPc, setSelectedPc] = useState(null);
+  const [intervalIds, setIntervalIds] = useState({});
+
+  useEffect(() => {
+    pcs.forEach((pc) => {
+      const intervalId = setInterval(() => fetchPcData(pc.name), 3000);
+      setIntervalIds(prevIds => ({ ...prevIds, [pc.name]: intervalId }));
+      return () => clearInterval(intervalId);
+    });
+
+    return () => {
+      Object.values(intervalIds).forEach(clearInterval);
+    };
+  }, [pcs]);
+
+  const fetchPcData = async (pcName) => {
+    try {
+      const timestamp = new Date().getTime();
+      const capturaUrl = `${BASE_URL}/cloud_storage/${pcName}/captura.png?timestamp=${timestamp}`;
+      
+      setCapturaUrls((prevUrls) => ({
+        ...prevUrls,
+        [pcName]: capturaUrl,
+      }));
+  
+      const infoResponse = await fetch(`${BASE_URL}/cloud_storage/${pcName}/info_pc.json`);
+      
+      if (infoResponse.status === 404) {
+        setPcInfo((prevInfo) => ({
+          ...prevInfo,
+          [pcName]: { error: 'PC no encontrada' },
+        }));
+        return;
+      }
+  
+      const infoData = await infoResponse.json();
+      setPcInfo((prevInfo) => ({
+        ...prevInfo,
+        [pcName]: infoData,
+      }));
+    } catch (error) {
+      console.error(`Error fetching data for ${pcName}:`, error);
+      setPcInfo((prevInfo) => ({
+        ...prevInfo,
+        [pcName]: { error: 'Error al obtener la información' },
+      }));
+    }
+  };
+
+  const addPc = () => {
+    if (newPcName && !pcs.some(pc => pc.name === newPcName)) {
+      const newPc = { name: newPcName, active: true };
+      setPcs((prevPcs) => [...prevPcs, newPc]);
+      setNewPcName("");
+    }
+  };
+
+  const openModal = (pcName) => {
+    setSelectedPc(pcName);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedPc(null);
+  };
+
+  const togglePc = (pcName, action) => {
+    if (action === 'stop') {
+      clearInterval(intervalIds[pcName]);
+      setPcs((prevPcs) => prevPcs.map(pc => pc.name === pcName ? { ...pc, active: false } : pc));
+    } else if (action === 'start') {
+      const intervalId = setInterval(() => fetchPcData(pcName), 3000);
+      setIntervalIds(prevIds => ({ ...prevIds, [pcName]: intervalId }));
+      setPcs((prevPcs) => prevPcs.map(pc => pc.name === pcName ? { ...pc, active: true } : pc));
+    }
+  };
+
+  return (
+    <div className="grid grid-rows-[auto_1fr_auto] gap-8 min-h-screen p-8">
+      <main className="flex flex-col items-center gap-8">
+        <h1 className="text-3xl font-bold">Monitoreo de PCs</h1>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+          {pcs.map((pc) => (
+            <div key={pc.name} className="border p-4 rounded-md shadow-md w-full">
+              <h2 className="text-xl font-semibold">{pc.name}</h2>
+              <div className="mt-2">
+                {pcInfo[pc.name] && pcInfo[pc.name].error ? (
+                  <p className="text-red-500">{pcInfo[pc.name].error}</p>
+                ) : (
+                  pcInfo[pc.name] && (
+                    <div className="mb-4">
+                      <p>Modelo: {pcInfo[pc.name].Nombre_SO}</p>
+                      <p>Estado: {pcInfo[pc.name].Estado || 'Activo'}</p>
+                    </div>
+                  )
+                )}
+              </div>
+              <div className="w-full">
+                {pcInfo[pc.name] && !pcInfo[pc.name].error ? (
+                  capturaUrls[pc.name] ? (
+                    <div className="relative aspect-video w-full h-[300px]">
+                      <Image
+                        src={capturaUrls[pc.name]}
+                        alt={`Captura de ${pc.name}`}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-md"
+                      />
+                    </div>
+                  ) : (
+                    <p>No hay capturas disponibles para esta PC.</p>
+                  )
+                ) : null}
+              </div>
+              <div className="flex gap-4 mt-4">
+                <button
+                  onClick={() => openModal(pc.name)}
+                  className="bg-blue-500 text-white py-2 px-4 rounded-md"
+                >
+                  Ver Información
+                </button>
+                <button
+                  onClick={() => togglePc(pc.name, pc.active ? 'stop' : 'start')}
+                  className={`py-2 px-4 rounded-md ${pc.active ? 'bg-red-500' : 'bg-green-500'} text-white`}
+                >
+                  {pc.active ? 'Detener Proceso' : 'Continuar Proceso'}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-8 flex gap-4 items-center">
+          <input
+            type="text"
+            value={newPcName}
+            onChange={(e) => setNewPcName(e.target.value)}
+            placeholder="Nombre de la nueva PC"
+            className="border p-2 rounded-md"
+          />
+          <button
+            onClick={addPc}
+            className="bg-green-500 text-white py-2 px-4 rounded-md"
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Agregar PC
+          </button>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      {modalOpen && selectedPc && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-[90%] max-w-lg">
+            <h2 className="text-2xl font-semibold mb-4">Información de {selectedPc}</h2>
+            {pcInfo[selectedPc] ? (
+              <div>
+                {pcInfo[selectedPc].error ? (
+                  <p className="text-red-500">{pcInfo[selectedPc].error}</p>
+                ) : (
+                  <>
+                    <p><strong>Nombre del equipo:</strong> {pcInfo[selectedPc].Nombre_Equipo}</p>
+                    <p><strong>Arquitectura:</strong> {pcInfo[selectedPc].Arquitectura.join(', ')}</p>
+                    <p><strong>Dirección IP:</strong> {pcInfo[selectedPc].Direccion_IP}</p>
+                    <p><strong>Procesador:</strong> {pcInfo[selectedPc].Procesador}</p>
+                    <p><strong>Memoria Usada:</strong> {pcInfo[selectedPc].MemoriaUsada} GB</p>
+                    <p><strong>Memoria Libre:</strong> {pcInfo[selectedPc].MemoriaLibre} GB</p>
+                    <p><strong>Memoria Total:</strong> {pcInfo[selectedPc].MemoriaTotal} GB</p>
+                    <p><strong>Sistema Operativo:</strong> {pcInfo[selectedPc].Sistema_Operativo}</p>
+                    <p><strong>Versión del SO:</strong> {pcInfo[selectedPc].Version_SO}</p>
+                    <p><strong>Tiempo de Arranque:</strong> {pcInfo[selectedPc].TiempoDeArranque}</p>
+                    <p><strong>Uso de CPU:</strong> {pcInfo[selectedPc].UsoDeCPU}%</p>
+                    <p><strong>Frecuencia de CPU:</strong> {pcInfo[selectedPc].Frecuencia_CPU} MHz</p>
+                    <p><strong>Disco:</strong> {pcInfo[selectedPc].Discos[0].Dispositivo} - {pcInfo[selectedPc].Discos[0].PorcentajeDeUso}% de uso, {pcInfo[selectedPc].Discos[0].EspacioLibre} GB libres de {pcInfo[selectedPc].Discos[0].TamañoTotal} GB</p>
+                  </>
+                )}
+              </div>
+            ) : (
+              <p>Cargando información...</p>
+            )}
+            <button
+              onClick={closeModal}
+              className="bg-red-500 text-white py-2 px-4 rounded-md mt-4"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
