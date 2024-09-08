@@ -1,13 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-    //   domains: ['c208-38-253-146-9.ngrok-free.app'],
-      domains: ['26b0-38-253-146-9.ngrok-free.app'],
-    },
-  };
-  
-  export default nextConfig;
-  
+  images: {
+    domains: ['127.0.0.1', 'img.freepik.com', '192.168.18.11', '192.168.18.8'],
+  },
+};
+
+export default nextConfig;
+
 
 /*
 

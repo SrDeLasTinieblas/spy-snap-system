@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-const BASE_URL = 'https://092c-38-253-146-9.ngrok-free.app';
+const BASE_URL = 'http://192.168.18.8:5000';
 
 export default function Home() {
   const [pcs, setPcs] = useState([]);
@@ -16,21 +16,23 @@ export default function Home() {
 
   useEffect(() => {
     pcs.forEach((pc) => {
-      const intervalId = setInterval(() => fetchPcData(pc.name), 3000);
-      setIntervalIds(prevIds => ({ ...prevIds, [pc.name]: intervalId }));
-      return () => clearInterval(intervalId);
+      if (pc.active && !intervalIds[pc.name]) {
+        const intervalId = setInterval(() => fetchPcData(pc.name), 1500);
+        setIntervalIds((prevIds) => ({ ...prevIds, [pc.name]: intervalId }));
+      }
     });
 
     return () => {
+      // Limpiar todos los intervalos cuando el componente se desmonte
       Object.values(intervalIds).forEach(clearInterval);
     };
-  }, [pcs]);
+  }, [pcs, intervalIds]);
 
   const fetchPcData = async (pcName) => {
     try {
       const timestamp = new Date().getTime();
       const capturaUrl = `${BASE_URL}/cloud_storage/${pcName}/captura.png?timestamp=${timestamp}`;
-      
+            
       setCapturaUrls((prevUrls) => ({
         ...prevUrls,
         [pcName]: capturaUrl,
@@ -80,12 +82,20 @@ export default function Home() {
 
   const togglePc = (pcName, action) => {
     if (action === 'stop') {
+      // Detener el intervalo y eliminarlo del estado
       clearInterval(intervalIds[pcName]);
+      setIntervalIds((prevIds) => {
+        const { [pcName]: _, ...rest } = prevIds;
+        return rest;
+      });
       setPcs((prevPcs) => prevPcs.map(pc => pc.name === pcName ? { ...pc, active: false } : pc));
     } else if (action === 'start') {
-      const intervalId = setInterval(() => fetchPcData(pcName), 3000);
-      setIntervalIds(prevIds => ({ ...prevIds, [pcName]: intervalId }));
-      setPcs((prevPcs) => prevPcs.map(pc => pc.name === pcName ? { ...pc, active: true } : pc));
+      // Reiniciar el intervalo solo si no está activo
+      if (!intervalIds[pcName]) {
+        const intervalId = setInterval(() => fetchPcData(pcName), 3000);
+        setIntervalIds((prevIds) => ({ ...prevIds, [pcName]: intervalId }));
+        setPcs((prevPcs) => prevPcs.map(pc => pc.name === pcName ? { ...pc, active: true } : pc));
+      }
     }
   };
 
@@ -116,10 +126,14 @@ export default function Home() {
                     <div className="relative aspect-video w-full h-[300px]">
                       <Image
                         src={capturaUrls[pc.name]}
+                        // src='http://localhost:5000/cloud_storage/Tinieblas/captura.png'
+                        // src='https://img.freepik.com/foto-gratis/puesta-sol-siluetas-arboles-montanas-ia-generativa_169016-29371.jpg?t=st=1725779613~exp=1725783213~hmac=2cfe5fdc10572010918e9d2530bb016eb6225e06e9b1be126acab557bb46d01d&w=1380'
                         alt={`Captura de ${pc.name}`}
-                        layout="fill"
+                        // layout="fill"
                         objectFit="cover"
-                        className="rounded-md"
+                        className="rounded-md"            
+                        width={1000} // Ajusta el tamaño según lo necesites
+                        height={500} // Ajusta el tamaño según lo necesites
                       />
                     </div>
                   ) : (
@@ -181,22 +195,22 @@ export default function Home() {
                     <p><strong>Memoria Total:</strong> {pcInfo[selectedPc].MemoriaTotal} GB</p>
                     <p><strong>Sistema Operativo:</strong> {pcInfo[selectedPc].Sistema_Operativo}</p>
                     <p><strong>Versión del SO:</strong> {pcInfo[selectedPc].Version_SO}</p>
-                    <p><strong>Tiempo de Arranque:</strong> {pcInfo[selectedPc].TiempoDeArranque}</p>
-                    <p><strong>Uso de CPU:</strong> {pcInfo[selectedPc].UsoDeCPU}%</p>
-                    <p><strong>Frecuencia de CPU:</strong> {pcInfo[selectedPc].Frecuencia_CPU} MHz</p>
-                    <p><strong>Disco:</strong> {pcInfo[selectedPc].Discos[0].Dispositivo} - {pcInfo[selectedPc].Discos[0].PorcentajeDeUso}% de uso, {pcInfo[selectedPc].Discos[0].EspacioLibre} GB libres de {pcInfo[selectedPc].Discos[0].TamañoTotal} GB</p>
+                    <p><strong>Estado del equipo:</strong> {pcInfo[selectedPc].Estado}</p>
                   </>
                 )}
               </div>
             ) : (
               <p>Cargando información...</p>
             )}
-            <button
-              onClick={closeModal}
-              className="bg-red-500 text-white py-2 px-4 rounded-md mt-4"
-            >
-              Cerrar
-            </button>
+
+            <div className="mt-8 flex justify-end">
+              <button
+                onClick={closeModal}
+                className="bg-gray-500 text-white py-2 px-4 rounded-md"
+              >
+                Cerrar
+              </button>
+            </div>
           </div>
         </div>
       )}
