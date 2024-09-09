@@ -4,7 +4,7 @@
 
 This project is a cutting-edge real-time screen capture system designed to monitor and display the screens of multiple computers on the same network or across different networks. Whether you're managing IT support, conducting network administration, or overseeing multiple machines, our system provides the tools you need for effective remote monitoring.
 
-![Imagen]([https://ruta-a-tu-imagen/screenshot.png](https://github.com/SrDeLasTinieblas/spy-snap-front/blob/master/screen-capture/Captura%20de%20pantalla%202024-09-09.png))
+![]([https://ruta-a-tu-imagen/screenshot.png](https://github.com/SrDeLasTinieblas/spy-snap-front/blob/master/screen-capture/Captura%20de%20pantalla%202024-09-09.png)
 
 ## ✨ Features
 
