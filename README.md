@@ -31,4 +31,64 @@ Follow these steps to get up and running with the Real-Time Screen Capture Syste
    # or
    pnpm install
    ```
-   
+
+3. **Install Dependencies**
+   Choose your preferred package manager:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+4. **Configuration**
+   Proper configuration is key for both server and client-side components:
+   - 🖥️ **Server Configuration**: Set up the server to handle incoming video streams or image snapshots.
+   - 💻 **Client Configuration**: Configure client machines to securely send their screen data to the server.
+
+## 🛠️ Tech Stack
+
+- Frontend: React.js
+- Backend: Node.js with Express
+- Real-time Communication: WebSockets
+- Video Streaming: WebRTC
+- Database: MongoDB
+
+## 📊 Performance
+
+Our system is designed for optimal performance:
+- 🚄 Low latency streaming (average <100ms delay)
+- 🗜️ Efficient compression for minimal bandwidth usage
+- 🔢 Support for up to 100 simultaneous connections
+
+## 🔐 Security
+
+We take security seriously:
+- 🔒 End-to-end encryption for all data transmissions
+- 🔑 Multi-factor authentication for admin access
+- 🕵️ Comprehensive audit logging
+
+## 📘 Documentation
+
+For detailed information on setup, configuration, and usage, please refer to our [Wiki](https://github.com/yourusername/screen-capture-system/wiki).
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for more details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📞 Support
+
+If you encounter any issues or have questions, please file an issue on our [GitHub issue tracker](https://github.com/yourusername/screen-capture-system/issues).
+
+## 🙏 Acknowledgements
+
+A big thank you to all our contributors and the open-source projects that made this possible!
+
+---
+
+Made with ❤️ by [Your Team Name]
