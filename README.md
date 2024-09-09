@@ -61,7 +61,7 @@ Follow these steps to get up and running with the Real-Time Screen Capture Syste
 ## 📊 Performance
 
 Our system is designed for optimal performance:
-- 🚄 Low latency streaming (average <100ms delay)
+- 🚄 Low latency streaming (average <2000ms delay)
 - 🗜️ Efficient compression for minimal bandwidth usage
 - 🔢 Support for up to 100 simultaneous connections
 
