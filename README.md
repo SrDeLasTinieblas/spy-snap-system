@@ -4,6 +4,8 @@
 
 This project is a cutting-edge real-time screen capture system designed to monitor and display the screens of multiple computers on the same network or across different networks. Whether you're managing IT support, conducting network administration, or overseeing multiple machines, our system provides the tools you need for effective remote monitoring.
 
+![Sistema de Captura de Pantalla]([https://ruta-a-tu-imagen/screenshot.png](https://github.com/SrDeLasTinieblas/spy-snap-front/blob/master/screen-capture/Captura%20de%20pantalla%202024-09-09.png))
+
 ## ✨ Features
 
 - 🎥 **Real-Time Screen Streaming**: View live feeds from remote computers using state-of-the-art streaming video technology.
@@ -84,7 +86,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-If you encounter any issues or have questions, please file an issue on our [GitHub issue tracker]([https://github.com/yourusername/screen-capture-system/issues](https://github.com/SrDeLasTinieblas/spy-snap-front/blob/master/screen-capture/Captura%20de%20pantalla%202024-09-09.png)).
+If you encounter any issues or have questions, please file an issue on our [GitHub issue tracker](https://github.com/yourusername/screen-capture-system/issues).
 
 ## 🙏 Acknowledgements
 
