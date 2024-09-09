@@ -53,8 +53,8 @@ Follow these steps to get up and running with the Real-Time Screen Capture Syste
 
 ## 🛠️ Tech Stack
 
-- Frontend: React.js and Nextjs
-- Backend: Node.js with Python
+- Frontend: React.js with Nextjs
+- Backend: Python
 - Video Streaming: WebRTC
 <!-- - Database: MongoDB -->
 
