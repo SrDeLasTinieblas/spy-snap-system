@@ -10,7 +10,7 @@ This project is a cutting-edge real-time screen capture system designed to monit
 - 📸 **Periodic Screen Snapshots**: Capture and view periodic snapshots of screens for archival or review purposes.
 - 🌐 **Web-Based Interface**: Access and control the system through our intuitive, user-friendly web interface.
 - 🔗 **Cross-Network Compatibility**: Seamlessly monitor computers across different networks with proper configuration.
-- ⚙️ **Customizable Settings**: Tailor the system to your needs by adjusting capture intervals, resolution, and other settings.
+<!-- - ⚙️ **Customizable Settings**: Tailor the system to your needs by adjusting capture intervals, resolution, and other settings. -->
 
 ## 🚀 Getting Started
 
@@ -49,11 +49,10 @@ Follow these steps to get up and running with the Real-Time Screen Capture Syste
 
 ## 🛠️ Tech Stack
 
-- Frontend: React.js
-- Backend: Node.js with Express
-- Real-time Communication: WebSockets
+- Frontend: React.js and Nextjs
+- Backend: Node.js with Python
 - Video Streaming: WebRTC
-- Database: MongoDB
+<!-- - Database: MongoDB -->
 
 ## 📊 Performance
 
@@ -62,12 +61,14 @@ Our system is designed for optimal performance:
 - 🗜️ Efficient compression for minimal bandwidth usage
 - 🔢 Support for up to 100 simultaneous connections
 
+<!--
 ## 🔐 Security
 
 We take security seriously:
 - 🔒 End-to-end encryption for all data transmissions
 - 🔑 Multi-factor authentication for admin access
 - 🕵️ Comprehensive audit logging
+-->
 
 ## 📘 Documentation
 
@@ -83,7 +84,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-If you encounter any issues or have questions, please file an issue on our [GitHub issue tracker](https://github.com/yourusername/screen-capture-system/issues).
+If you encounter any issues or have questions, please file an issue on our [GitHub issue tracker]([https://github.com/yourusername/screen-capture-system/issues](https://github.com/SrDeLasTinieblas/spy-snap-front/blob/master/screen-capture/Captura%20de%20pantalla%202024-09-09.png)).
 
 ## 🙏 Acknowledgements
 
@@ -91,4 +92,4 @@ A big thank you to all our contributors and the open-source projects that made t
 
 ---
 
-Made with ❤️ by [Your Team Name]
+Made with ❤️ by [SrDeLasTinieblas]
