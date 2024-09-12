@@ -10,7 +10,7 @@ This project is a cutting-edge real-time screen capture system designed to monit
 
 ## ✨ Features
 
-- 🎥 **Real-Time Screen Streaming**: View live feeds from remote computers using state-of-the-art streaming video technology.
+<!--- 🎥 **Real-Time Screen Streaming**: View live feeds from remote computers using state-of-the-art streaming video technology.-->
 - 📸 **Periodic Screen Snapshots**: Capture and view periodic snapshots of screens for archival or review purposes.
 - 🌐 **Web-Based Interface**: Access and control the system through our intuitive, user-friendly web interface.
 - 🔗 **Cross-Network Compatibility**: Seamlessly monitor computers across different networks with proper configuration.
