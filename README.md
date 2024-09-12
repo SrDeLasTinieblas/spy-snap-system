@@ -98,4 +98,4 @@ A big thank you to all our contributors and the open-source projects that made t
 
 <p><a href="https://paypal.me/tinieblas2024?country.x=PE&locale.x=es_XC"> <img align="left" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="50" width="210" alt="https://paypal.me/tinieblas2024?country.x=PE&locale.x=es_XC" /></a></p><br><br>
 
-Made with ❤️ by [SrDeLasTinieblas]
+Made with ❤️ by SrDeLasTinieblas
