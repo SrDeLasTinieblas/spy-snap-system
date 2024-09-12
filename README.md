@@ -76,7 +76,7 @@ We take security seriously:
 
 ## 📘 Documentation
 
-For detailed information on setup, configuration, and usage, please refer to our [Wiki](https://github.com/yourusername/screen-capture-system/wiki).
+For detailed information on setup, configuration, and usage, please refer to our [Wiki](https://github.com/SrDeLasTinieblas/screen-capture-system/wiki).
 
 ## 🤝 Contributing
 
@@ -88,12 +88,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-If you encounter any issues or have questions, please file an issue on our [GitHub issue tracker](https://github.com/yourusername/screen-capture-system/issues).
+If you encounter any issues or have questions, please file an issue on our [GitHub issue tracker](https://github.com/SrDeLasTinieblas/screen-capture-system/issues).
 
 ## 🙏 Acknowledgements
 
 A big thank you to all our contributors and the open-source projects that made this possible!
 
 ---
+
+<p><a href="https://paypal.me/tinieblas2024?country.x=PE&locale.x=es_XC"> <img align="left" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="50" width="210" alt="https://paypal.me/tinieblas2024?country.x=PE&locale.x=es_XC" /></a></p><br><br>
 
 Made with ❤️ by [SrDeLasTinieblas]
